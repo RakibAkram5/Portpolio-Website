@@ -1,13 +1,11 @@
 import { motion } from 'framer-motion'
+import type { ProfileStat } from '@/types'
 
-const stats = [
-  { value: '3+', label: 'Years Learning & Building' },
-  { value: '10+', label: 'Projects' },
-  { value: 'Multiple', label: 'Technologies' },
-  { value: 'Full-Stack', label: 'Development' },
-]
+interface AboutStatsProps {
+  stats: ProfileStat[]
+}
 
-export function AboutStats() {
+export function AboutStats({ stats }: AboutStatsProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}

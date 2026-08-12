@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,20 +8,105 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum SkillCategory {
+  Frontend
+  Backend
+  Database
+  Mobile
+  Tools
+}
+
+enum SkillLevel {
+  Beginner
+  Intermediate
+  Advanced
+}
+
+enum TimelineTrack {
+  JOURNEY
+  CAREER
+}
+
 model Project {
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  tagline      String   @default("")
+  description  String
+  problem      String   @default("")
+  architecture String   @default("")
+  image        String
+  screenshots  String[]
+  githubUrl    String
+  liveUrl      String?
+  tech         String[]
+  features     String[]
+  featured     Boolean  @default(false)
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("projects")
+}
+
+model Skill {
+  id          String        @id @default(cuid())
+  name        String
+  category    SkillCategory
+  description String
+  level       SkillLevel
+  icon        String
+  order       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@map("skills")
+}
+
+model Service {
   id          String   @id @default(cuid())
   title       String
-  slug        String   @unique
   description String
-  image       String
-  githubUrl   String
-  liveUrl     String?
-  tech        String[]
-  featured    Boolean  @default(false)
+  icon        String
+  order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@map("projects")
+  @@map("services")
+}
+
+model TimelineItem {
+  id          String        @id @default(cuid())
+  track       TimelineTrack
+  year        String
+  title       String
+  description String
+  order       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@map("timeline_items")
+}
+
+model Profile {
+  id             Int      @id @default(1)
+  name           String
+  role           String
+  roles          String[]
+  tagline        String
+  intro          String
+  email          String
+  location       String
+  resumeUrl      String
+  githubUsername String
+  githubUrl      String
+  linkedinUrl    String
+  aboutHeading   String
+  aboutParagraphs String[]
+  stats          Json
+  updatedAt      DateTime @updatedAt
+
+  @@map("profile")
 }
 
 model ContactMessage {

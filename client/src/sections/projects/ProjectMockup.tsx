@@ -35,7 +35,7 @@ export function ProjectMockup({ project, className }: ProjectMockupProps) {
         <div className="grid-bg absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_20%,transparent_90%)]" />
 
         <span className="relative font-mono text-5xl font-bold tracking-tight text-text-primary/10 select-none sm:text-6xl">
-          {project.name
+          {project.title
             .split(' ')
             .map((w) => w[0])
             .join('')}

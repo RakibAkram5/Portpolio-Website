@@ -4,7 +4,7 @@ export const projects: Project[] = [
   {
     id: '1',
     slug: 'taleemplus',
-    name: 'TaleemPlus',
+    title: 'TaleemPlus',
     tagline: 'Educational management and learning platform',
     description:
       'A full-featured educational management platform connecting students, teachers, and parents in one place — covering the entire academic workflow from enrollment to results.',
@@ -32,11 +32,12 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/rakibakram/taleemplus',
     liveUrl: null,
     featured: true,
+    order: 0,
   },
   {
     id: '2',
     slug: 'srs-godown-erp',
-    name: 'SRS Godown ERP',
+    title: 'SRS Godown ERP',
     tagline: 'Warehouse and inventory management system',
     description:
       'An ERP system for warehouse and distribution operations — tracking stock, dealers, vendors, and finances in real time with a type-safe full-stack architecture.',
@@ -65,11 +66,12 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/rakibakram/srs-godown-erp',
     liveUrl: null,
     featured: true,
+    order: 1,
   },
   {
     id: '3',
     slug: 'student-crud-api',
-    name: 'Student CRUD API',
+    title: 'Student CRUD API',
     tagline: 'A clean, type-safe REST API reference implementation',
     description:
       'A focused REST API for managing student records — built as a clean reference implementation of authentication, validation, and ORM-backed CRUD operations.',
@@ -90,5 +92,6 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/rakibakram/student-crud-api',
     liveUrl: null,
     featured: false,
+    order: 2,
   },
 ]

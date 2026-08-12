@@ -1,9 +1,13 @@
 import { motion } from 'framer-motion'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import { services } from '@/data/services'
+import { services as fallbackServices } from '@/data/services'
+import { useApiData } from '@/hooks/useApiData'
+import { fetchServices } from '@/services/api'
 import { Icon } from '@/components/ui/Icon'
 
 export function Services() {
+  const { data: services } = useApiData(fetchServices, fallbackServices)
+
   return (
     <section id="services" className="relative py-28 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -16,7 +20,7 @@ export function Services() {
         <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {services.map((service, i) => (
             <motion.div
-              key={service.title}
+              key={service.id}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-80px' }}

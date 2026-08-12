@@ -24,14 +24,14 @@ export function ProjectCard({ project, index, onOpen }: ProjectCardProps) {
         type="button"
         onClick={() => onOpen(project)}
         className="block w-full text-left cursor-pointer"
-        aria-label={`View details for ${project.name}`}
+        aria-label={`View details for ${project.title}`}
       >
         <ProjectMockup project={project} className="transition-transform duration-500 group-hover:scale-[1.01]" />
 
         <div className="mt-6 flex items-start justify-between gap-4">
           <div>
             <h3 className="text-xl font-semibold text-text-primary flex items-center gap-1.5">
-              {project.name}
+              {project.title}
               <ArrowUpRight
                 size={17}
                 className="text-accent opacity-0 -translate-x-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0"

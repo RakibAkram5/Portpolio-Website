@@ -1,10 +1,10 @@
-import { siteConfig } from '@/config/site'
-import type { ApiResponse, ContactFormData } from '@/types'
+import { apiBaseUrl } from '@/config/site'
+import type { ApiResponse, ContactFormData, Profile, Project, Service, Skill, TimelineItem } from '@/types'
 
-async function request<T>(path: string, options?: RequestInit): Promise<ApiResponse<T>> {
+export async function request<T>(path: string, options?: RequestInit): Promise<ApiResponse<T>> {
   try {
-    const res = await fetch(`${siteConfig.apiBaseUrl}${path}`, {
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch(`${apiBaseUrl}${path}`, {
+      headers: { 'Content-Type': 'application/json', ...options?.headers },
       ...options,
     })
 
@@ -28,5 +28,21 @@ export function sendContactMessage(data: ContactFormData) {
 }
 
 export function fetchProjects() {
-  return request('/projects')
+  return request<Project[]>('/projects')
+}
+
+export function fetchSkills() {
+  return request<Skill[]>('/skills')
+}
+
+export function fetchServices() {
+  return request<Service[]>('/services')
+}
+
+export function fetchTimeline() {
+  return request<TimelineItem[]>('/timeline')
+}
+
+export function fetchProfile() {
+  return request<Profile>('/profile')
 }

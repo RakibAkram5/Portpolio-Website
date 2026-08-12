@@ -1,29 +1,13 @@
-import type { ExperienceItem, TimelineItem } from '@/types'
+import type { TimelineItem } from '@/types'
 
-export const journeyTimeline: TimelineItem[] = [
-  {
-    year: 'Learning',
-    title: 'Learning',
-    description: 'Studying computer science fundamentals, programming languages, and core CS concepts.',
-  },
-  {
-    year: 'Building',
-    title: 'Building',
-    description: 'Applying fundamentals to real applications — mobile apps, APIs, and databases.',
-  },
-  {
-    year: 'Freelancing',
-    title: 'Freelancing',
-    description: 'Delivering client projects end-to-end, from requirements to deployment.',
-  },
-  {
-    year: 'Full-Stack',
-    title: 'Full-Stack Development',
-    description: 'Designing scalable architectures across frontend, backend, and database layers.',
-  },
+const rawJourney: Omit<TimelineItem, 'id' | 'order' | 'track'>[] = [
+  { year: 'Learning', title: 'Learning', description: 'Studying computer science fundamentals, programming languages, and core CS concepts.' },
+  { year: 'Building', title: 'Building', description: 'Applying fundamentals to real applications — mobile apps, APIs, and databases.' },
+  { year: 'Freelancing', title: 'Freelancing', description: 'Delivering client projects end-to-end, from requirements to deployment.' },
+  { year: 'Full-Stack', title: 'Full-Stack Development', description: 'Designing scalable architectures across frontend, backend, and database layers.' },
 ]
 
-export const experienceTimeline: ExperienceItem[] = [
+const rawCareer: Omit<TimelineItem, 'id' | 'order' | 'track'>[] = [
   {
     year: '2023',
     title: 'Started Computer Science Journey',
@@ -49,3 +33,11 @@ export const experienceTimeline: ExperienceItem[] = [
       'Focused on full-stack development, scalable software architecture, and shipping production-ready applications.',
   },
 ]
+
+export const timelineItems: TimelineItem[] = [
+  ...rawJourney.map((item, i) => ({ ...item, id: `journey-${i}`, order: i, track: 'JOURNEY' as const })),
+  ...rawCareer.map((item, i) => ({ ...item, id: `career-${i}`, order: i, track: 'CAREER' as const })),
+]
+
+export const journeyTimeline = timelineItems.filter((item) => item.track === 'JOURNEY')
+export const experienceTimeline = timelineItems.filter((item) => item.track === 'CAREER')

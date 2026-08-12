@@ -13,6 +13,8 @@ export const env = {
   port: Number(process.env.PORT ?? 4000),
   databaseUrl: requireEnv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/portfolio'),
   clientOrigin: process.env.CLIENT_ORIGIN ?? 'http://localhost:5173',
+  adminPasswordHash: requireEnv('ADMIN_PASSWORD_HASH'),
+  jwtSecret: requireEnv('JWT_SECRET'),
 }
 
 export const isProduction = env.nodeEnv === 'production'

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Code2, Layers3, Smartphone, Server } from 'lucide-react'
-import { siteConfig } from '@/config/site'
+import { useProfile } from '@/hooks/useProfile'
 
 const focusAreas = [
   { label: 'Full-Stack Development', icon: Layers3 },
@@ -10,6 +10,14 @@ const focusAreas = [
 ]
 
 export function DeveloperCard() {
+  const { data: profile } = useProfile()
+  const initials = profile.name
+    .split(' ')
+    .map((w) => w[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase()
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -22,11 +30,11 @@ export function DeveloperCard() {
 
       <div className="relative flex items-center gap-4">
         <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-accent/30 bg-accent/10 font-mono text-xl font-bold text-accent">
-          RA
+          {initials}
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-text-primary">{siteConfig.name}</h3>
-          <p className="text-sm text-text-secondary">{siteConfig.roles.join(' · ')}</p>
+          <h3 className="text-lg font-semibold text-text-primary">{profile.name}</h3>
+          <p className="text-sm text-text-secondary">{profile.roles.join(' · ')}</p>
         </div>
       </div>
 

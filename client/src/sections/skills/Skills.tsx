@@ -1,7 +1,9 @@
 import { useState, useMemo } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import { skills, skillCategories } from '@/data/skills'
+import { skills as fallbackSkills, skillCategories } from '@/data/skills'
+import { useApiData } from '@/hooks/useApiData'
+import { fetchSkills } from '@/services/api'
 import { cn } from '@/utils/cn'
 import { SkillCard } from './SkillCard'
 
@@ -9,10 +11,11 @@ type Filter = 'All' | (typeof skillCategories)[number]
 
 export function Skills() {
   const [filter, setFilter] = useState<Filter>('All')
+  const { data: skills } = useApiData(fetchSkills, fallbackSkills)
 
   const filtered = useMemo(
     () => (filter === 'All' ? skills : skills.filter((s) => s.category === filter)),
-    [filter],
+    [filter, skills],
   )
 
   return (
@@ -53,7 +56,7 @@ export function Skills() {
         <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {filtered.map((skill, i) => (
-              <SkillCard key={skill.name} skill={skill} index={i} />
+              <SkillCard key={skill.id} skill={skill} index={i} />
             ))}
           </AnimatePresence>
         </div>

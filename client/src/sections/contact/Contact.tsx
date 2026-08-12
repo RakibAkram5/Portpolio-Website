@@ -3,12 +3,15 @@ import { Mail, MapPin, Send, CheckCircle2, AlertCircle } from 'lucide-react'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { InputField, TextareaField } from '@/components/ui/FormField'
 import { Button } from '@/components/ui/Button'
-import { siteConfig, socialLinks } from '@/config/site'
+import { buildSocialLinks } from '@/config/site'
+import { useProfile } from '@/hooks/useProfile'
 import { Icon } from '@/components/ui/Icon'
 import { useContactForm } from './useContactForm'
 
 export function Contact() {
   const { data, errors, status, statusMessage, updateField, handleSubmit } = useContactForm()
+  const { data: profile } = useProfile()
+  const socialLinks = buildSocialLinks(profile)
 
   return (
     <section id="contact" className="relative py-28 sm:py-32">
@@ -38,15 +41,15 @@ export function Contact() {
 
               <div className="mt-6 flex flex-col gap-4">
                 <a
-                  href={`mailto:${siteConfig.email}`}
+                  href={`mailto:${profile.email}`}
                   className="flex items-center gap-3 text-sm text-text-secondary hover:text-accent transition-colors"
                 >
                   <Mail size={16} className="text-accent" />
-                  {siteConfig.email}
+                  {profile.email}
                 </a>
                 <div className="flex items-center gap-3 text-sm text-text-secondary">
                   <MapPin size={16} className="text-accent" />
-                  {siteConfig.location}
+                  {profile.location}
                 </div>
               </div>
             </div>

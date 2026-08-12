@@ -4,7 +4,7 @@ import { GithubIcon } from '@/components/icons/BrandIcons'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Button } from '@/components/ui/Button'
 import { skills } from '@/data/skills'
-import { siteConfig } from '@/config/site'
+import { useProfile } from '@/hooks/useProfile'
 import { useGithubProfile } from '@/hooks/useGithubProfile'
 import { ActivityGraph } from './ActivityGraph'
 
@@ -15,7 +15,8 @@ const fallbackStats = [
 ]
 
 export function GithubActivity() {
-  const { profile, repos, activity, status } = useGithubProfile(siteConfig.githubUsername)
+  const { data: siteProfile } = useProfile()
+  const { profile, repos, activity, status } = useGithubProfile(siteProfile.githubUsername)
 
   const stats =
     status === 'success' && profile
@@ -35,9 +36,9 @@ export function GithubActivity() {
             title="Open Source & Code"
             description="A live look at my public GitHub footprint — repositories, recent activity, and the projects I'm currently working on."
           />
-          <a href={siteConfig.githubUrl} target="_blank" rel="noreferrer" className="shrink-0">
+          <a href={siteProfile.githubUrl} target="_blank" rel="noreferrer" className="shrink-0">
             <Button variant="secondary" icon={<GithubIcon size={16} />} iconPosition="left">
-              @{siteConfig.githubUsername}
+              @{siteProfile.githubUsername}
             </Button>
           </a>
         </div>

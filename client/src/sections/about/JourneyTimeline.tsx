@@ -12,7 +12,7 @@ export function JourneyTimeline({ items }: JourneyTimelineProps) {
       <div className="flex flex-col gap-6">
         {items.map((step, i) => (
           <motion.div
-            key={step.title}
+            key={step.id}
             initial={{ opacity: 0, x: -16 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-60px' }}

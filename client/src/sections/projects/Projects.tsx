@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import { projects } from '@/data/projects'
+import { projects as fallbackProjects } from '@/data/projects'
+import { useApiData } from '@/hooks/useApiData'
+import { fetchProjects } from '@/services/api'
 import type { Project } from '@/types'
 import { ProjectCard } from './ProjectCard'
 import { ProjectModal } from './ProjectModal'
 
 export function Projects() {
   const [activeProject, setActiveProject] = useState<Project | null>(null)
+  const { data: projects } = useApiData(fetchProjects, fallbackProjects)
 
   return (
     <section id="projects" className="relative py-28 sm:py-32">

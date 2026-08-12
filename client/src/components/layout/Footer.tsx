@@ -1,11 +1,14 @@
 import { Mail } from 'lucide-react'
 import { GithubIcon, LinkedinIcon } from '@/components/icons/BrandIcons'
-import { navLinks, siteConfig, socialLinks } from '@/config/site'
+import { navLinks, buildSocialLinks } from '@/config/site'
+import { useProfile } from '@/hooks/useProfile'
 
 const socialIcons = { github: GithubIcon, linkedin: LinkedinIcon, mail: Mail }
 
 export function Footer() {
   const year = new Date().getFullYear()
+  const { data: profile } = useProfile()
+  const socialLinks = buildSocialLinks(profile)
 
   function handleNavClick(e: React.MouseEvent, href: string) {
     e.preventDefault()
@@ -19,10 +22,10 @@ export function Footer() {
           <div>
             <a href="#home" onClick={(e) => handleNavClick(e, '#home')} className="font-mono text-lg font-semibold text-text-primary">
               <span className="text-accent">&lt;</span>
-              {siteConfig.name}
+              {profile.name}
               <span className="text-accent">/&gt;</span>
             </a>
-            <p className="mt-3 text-sm text-text-secondary">{siteConfig.role}</p>
+            <p className="mt-3 text-sm text-text-secondary">{profile.role}</p>
           </div>
 
           <div>
@@ -68,7 +71,7 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-border pt-6">
           <p className="text-xs text-text-muted">
-            © {year} {siteConfig.name}. All rights reserved.
+            © {year} {profile.name}. All rights reserved.
           </p>
           <p className="text-xs text-text-muted font-mono">Built with React, TypeScript &amp; Tailwind CSS</p>
         </div>

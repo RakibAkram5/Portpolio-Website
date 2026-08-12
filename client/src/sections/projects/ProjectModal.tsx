@@ -20,7 +20,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
 
           <div className="mt-7">
             <h2 id="project-modal-title" className="text-2xl sm:text-3xl font-bold text-text-primary">
-              {project.name}
+              {project.title}
             </h2>
             <p className="mt-1.5 text-text-secondary">{project.tagline}</p>
           </div>

@@ -1,8 +1,14 @@
 import { motion } from 'framer-motion'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import { experienceTimeline } from '@/data/experience'
+import { timelineItems as fallbackTimeline } from '@/data/experience'
+import { useApiData } from '@/hooks/useApiData'
+import { fetchTimeline } from '@/services/api'
+import type { TimelineItem } from '@/types'
 
 export function Experience() {
+  const { data: timeline } = useApiData(fetchTimeline, fallbackTimeline)
+  const experienceTimeline = timeline.filter((item) => item.track === 'CAREER').sort((a, b) => a.order - b.order)
+
   return (
     <section id="experience" className="relative py-28 sm:py-32">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
@@ -19,7 +25,7 @@ export function Experience() {
             {experienceTimeline.map((item, i) => {
               const isEven = i % 2 === 0
               return (
-                <div key={item.year} className="relative flex items-start sm:items-center">
+                <div key={item.id} className="relative flex items-start sm:items-center">
                   <motion.div
                     initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -63,7 +69,7 @@ export function Experience() {
   )
 }
 
-function TimelineCard({ item, align }: { item: (typeof experienceTimeline)[number]; align: 'left' | 'right' }) {
+function TimelineCard({ item, align }: { item: TimelineItem; align: 'left' | 'right' }) {
   return (
     <div
       className={`max-w-sm rounded-2xl border border-border bg-surface/70 p-5 transition-colors hover:border-accent/30 ${

@@ -1,10 +1,17 @@
 import { useRef, type MouseEvent } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { ArrowRight, MessageSquare, CircleDot } from 'lucide-react'
-import { siteConfig } from '@/config/site'
+import { useProfile } from '@/hooks/useProfile'
 import { Button } from '@/components/ui/Button'
 import { Magnetic } from '@/components/ui/Magnetic'
 import { HeroVisual } from './HeroVisual'
+
+function splitHeadline(text: string, highlightWords = 2) {
+  const words = text.trim().split(' ')
+  const lead = words.slice(0, -highlightWords).join(' ')
+  const highlight = words.slice(-highlightWords).join(' ')
+  return { lead, highlight }
+}
 
 const container = {
   hidden: {},
@@ -19,6 +26,8 @@ const item = {
 }
 
 export function Hero() {
+  const { data: profile } = useProfile()
+  const { lead, highlight } = splitHeadline(profile.tagline)
   const sectionRef = useRef<HTMLElement>(null)
   const mvX = useMotionValue(0)
   const mvY = useMotionValue(0)
@@ -50,22 +59,18 @@ export function Hero() {
             className="mb-6 inline-flex items-center gap-2 rounded-full border border-border-strong bg-surface-2/70 px-4 py-1.5 font-mono text-xs text-text-secondary"
           >
             <CircleDot size={12} className="text-accent animate-pulse-slow" />
-            {siteConfig.roles.join(' · ')}
+            {profile.roles.join(' · ')}
           </motion.div>
 
           <motion.h1
             variants={item}
             className="text-[2.5rem] sm:text-5xl md:text-6xl font-bold leading-[1.08] tracking-tight text-text-primary"
           >
-            Building Digital Products
-            <br />
-            That <span className="text-gradient">Actually Work.</span>
+            {lead} <span className="text-gradient">{highlight}</span>
           </motion.h1>
 
           <motion.p variants={item} className="mt-6 max-w-xl text-base sm:text-lg text-text-secondary leading-relaxed">
-            I&apos;m <span className="text-text-primary font-medium">{siteConfig.name}</span>, a Full-Stack Developer
-            specializing in modern web applications, Flutter apps, scalable backend systems, APIs, and database
-            architecture.
+            {profile.intro}
           </motion.p>
 
           <motion.div variants={item} className="mt-9 flex flex-wrap items-center gap-4">

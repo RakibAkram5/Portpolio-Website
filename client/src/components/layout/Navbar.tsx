@@ -2,15 +2,17 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FileDown, Menu, X } from 'lucide-react'
 import { GithubIcon, LinkedinIcon } from '@/components/icons/BrandIcons'
-import { navLinks, siteConfig } from '@/config/site'
+import { navLinks } from '@/config/site'
 import { useScrolled } from '@/hooks/useScrolled'
 import { useActiveSection } from '@/hooks/useActiveSection'
+import { useProfile } from '@/hooks/useProfile'
 import { cn } from '@/utils/cn'
 
 export function Navbar() {
   const scrolled = useScrolled()
   const [menuOpen, setMenuOpen] = useState(false)
   const activeId = useActiveSection(navLinks.map((l) => l.href.replace('#', '')))
+  const { data: profile } = useProfile()
 
   function handleNavClick(href: string) {
     setMenuOpen(false)
@@ -41,7 +43,7 @@ export function Navbar() {
             className="font-mono text-lg font-semibold tracking-tight text-text-primary"
           >
             <span className="text-accent">&lt;</span>
-            {siteConfig.name}
+            {profile.name}
             <span className="text-accent">/&gt;</span>
           </a>
 
@@ -76,7 +78,7 @@ export function Navbar() {
 
           <div className="hidden md:flex items-center gap-3">
             <a
-              href={siteConfig.githubUrl}
+              href={profile.githubUrl}
               target="_blank"
               rel="noreferrer"
               aria-label="GitHub profile"
@@ -85,7 +87,7 @@ export function Navbar() {
               <GithubIcon size={19} />
             </a>
             <a
-              href={siteConfig.linkedinUrl}
+              href={profile.linkedinUrl}
               target="_blank"
               rel="noreferrer"
               aria-label="LinkedIn profile"
@@ -94,7 +96,7 @@ export function Navbar() {
               <LinkedinIcon size={19} />
             </a>
             <a
-              href={siteConfig.resumeUrl}
+              href={profile.resumeUrl}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 rounded-full border border-border-strong bg-surface-2 px-4 py-2 text-sm font-medium text-text-primary hover:border-accent/50 hover:text-accent transition-colors"
@@ -152,14 +154,14 @@ export function Navbar() {
                   </motion.a>
                 ))}
                 <div className="flex items-center gap-4 border-t border-border mt-2 pt-3 px-4">
-                  <a href={siteConfig.githubUrl} target="_blank" rel="noreferrer" aria-label="GitHub profile" className="text-text-secondary hover:text-accent">
+                  <a href={profile.githubUrl} target="_blank" rel="noreferrer" aria-label="GitHub profile" className="text-text-secondary hover:text-accent">
                     <GithubIcon size={19} />
                   </a>
-                  <a href={siteConfig.linkedinUrl} target="_blank" rel="noreferrer" aria-label="LinkedIn profile" className="text-text-secondary hover:text-accent">
+                  <a href={profile.linkedinUrl} target="_blank" rel="noreferrer" aria-label="LinkedIn profile" className="text-text-secondary hover:text-accent">
                     <LinkedinIcon size={19} />
                   </a>
                   <a
-                    href={siteConfig.resumeUrl}
+                    href={profile.resumeUrl}
                     target="_blank"
                     rel="noreferrer"
                     className="ml-auto inline-flex items-center gap-2 rounded-full border border-border-strong bg-surface-2 px-4 py-2 text-sm font-medium text-text-primary"

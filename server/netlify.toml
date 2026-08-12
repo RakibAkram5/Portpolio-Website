@@ -1,0 +1,18 @@
+[build]
+  command = "npm install && npx prisma generate"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+[functions."api"]
+  included_files = ["node_modules/.prisma/client/**", "node_modules/@prisma/client/**"]
+
+# Preserves the "/api" prefix the Express app expects: Netlify strips
+# "/.netlify/functions/api" from the invoked path, so redirecting
+# "/api/health" -> "/.netlify/functions/api/api/health" leaves the
+# function with req.url = "/api/health", matching app.use('/api', ...).
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/api/:splat"
+  status = 200

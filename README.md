@@ -242,15 +242,63 @@ npm start
 
 ---
 
-## Deployment
+## Deployment (Netlify)
 
-- **Frontend (`client/`)**: deploy the static `dist/` output to Vercel, Netlify, or any static host. Set `VITE_API_BASE_URL` to your deployed API URL at build time. Because this is a client-side-routed SPA (React Router, including `/admin` routes), configure your host to rewrite all unmatched paths to `index.html` (e.g. a `vercel.json` rewrite or Netlify `_redirects` file) so refreshing `/admin/projects` doesn't 404.
-- **Backend (`server/`)**: deploy to any Node host (Render, Railway, Fly.io, a VPS, etc.). Set `DATABASE_URL`, `PORT`, `NODE_ENV=production`, `CLIENT_ORIGIN` (your deployed frontend URL), `ADMIN_PASSWORD_HASH`, and `JWT_SECRET` as environment variables, then run:
-  ```bash
-  npm run build
-  npm run prisma:deploy   # applies migrations against the production DB
-  npm start
-  ```
-- **Database**: any managed PostgreSQL provider (Neon, Supabase, Railway, RDS) works — just point `DATABASE_URL` at it.
+This repo is set up to deploy as **two separate Netlify sites** from the same GitHub repo — one for the static frontend, one for the backend running as a Netlify Function. Each has its own `netlify.toml`.
 
-Never commit `.env` files — both `client/.env` and `server/.env` are gitignored. Use `.env.example` as the reference for required variables. Always set a fresh `ADMIN_PASSWORD_HASH` and `JWT_SECRET` in production — never reuse development values.
+### 0. Provision a cloud PostgreSQL database
+
+Netlify Functions can't reach a database on your own machine, so you need a real, internet-reachable Postgres first — [Neon](https://neon.tech) or [Supabase](https://supabase.com) both have a free tier that takes under 2 minutes to set up. Copy the connection string it gives you (looks like `postgresql://user:pass@host/db?sslmode=require`) — you'll need it below.
+
+### 1. Backend site (`server/`)
+
+In Netlify: **Add new site → Import from Git** → pick this repo → set **Base directory** to `server`. Netlify will pick up `server/netlify.toml` automatically (build command `npm install && npx prisma generate`, functions in `netlify/functions`).
+
+Set these environment variables on the site (Site settings → Environment variables):
+
+| Variable | Value |
+| --- | --- |
+| `DATABASE_URL` | the connection string from step 0 |
+| `NODE_ENV` | `production` |
+| `CLIENT_ORIGIN` | the frontend site's URL (set after step 2, e.g. `https://your-frontend.netlify.app`) |
+| `ADMIN_PASSWORD_HASH` | `node -e "console.log(require('bcryptjs').hashSync('your-password', 10))"` |
+| `JWT_SECRET` | `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` |
+
+Deploy the site, then run the migration once against the production database (from your machine, with `DATABASE_URL` pointed at the cloud DB):
+
+```bash
+cd server
+DATABASE_URL="<your cloud connection string>" npx prisma migrate deploy
+DATABASE_URL="<your cloud connection string>" npm run prisma:seed
+```
+
+Your API is now live at `https://<backend-site>.netlify.app/api/...`.
+
+### 2. Frontend site (`client/`)
+
+**Add new site** again, same repo, **Base directory** = `client`. Netlify picks up `client/netlify.toml` (build command `npm run build`, publish `dist`, with an SPA fallback redirect so `/admin/*` routes work on refresh).
+
+Set one environment variable:
+
+| Variable | Value |
+| --- | --- |
+| `VITE_API_BASE_URL` | `https://<backend-site>.netlify.app/api` |
+
+Deploy, then go back to the **backend** site's `CLIENT_ORIGIN` variable and set it to this frontend site's URL (needed for CORS), and redeploy the backend once.
+
+### Notes
+
+- The backend's rate limiting (`express-rate-limit`) uses in-memory storage, which resets on every cold start in a serverless function — it's a soft protection here, not a hard guarantee, which is fine for a portfolio site's traffic.
+- Prisma's query engine is built for multiple platforms (`binaryTargets` in `schema.prisma`) so the same schema works both on your local machine and on Netlify's Linux-based Functions runtime.
+- Never commit `.env` files — both `client/.env` and `server/.env` are gitignored. Use `.env.example` as the reference for required variables. Always set a fresh `ADMIN_PASSWORD_HASH` and `JWT_SECRET` in production — never reuse development values.
+
+### Alternative: traditional Node hosting
+
+If you'd rather not use serverless functions, the backend also runs as a normal long-lived Node process (`server/src/server.ts`, unrelated to the `netlify/functions/` wrapper) — deployable to Render, Railway, Fly.io, or a VPS the same way as before:
+
+```bash
+cd server
+npm run build
+npm run prisma:deploy
+npm start
+```

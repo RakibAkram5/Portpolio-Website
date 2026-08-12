@@ -12,6 +12,7 @@ export const profileSchema = z.object({
   tagline: z.string().trim().min(1).max(200),
   intro: z.string().trim().min(1).max(1000),
   email: z.string().trim().email(),
+  phone: z.string().trim().max(30).nullable().optional(),
   location: z.string().trim().min(1).max(100),
   resumeUrl: z.string().trim().min(1).max(500),
   githubUsername: z.string().trim().min(1).max(100),

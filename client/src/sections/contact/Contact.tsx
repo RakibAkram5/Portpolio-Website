@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Mail, MapPin, Send, CheckCircle2, AlertCircle } from 'lucide-react'
+import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle } from 'lucide-react'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { InputField, TextareaField } from '@/components/ui/FormField'
 import { Button } from '@/components/ui/Button'
@@ -47,6 +47,15 @@ export function Contact() {
                   <Mail size={16} className="text-accent" />
                   {profile.email}
                 </a>
+                {profile.phone && (
+                  <a
+                    href={`tel:${profile.phone.replace(/[^+\d]/g, '')}`}
+                    className="flex items-center gap-3 text-sm text-text-secondary hover:text-accent transition-colors"
+                  >
+                    <Phone size={16} className="text-accent" />
+                    {profile.phone}
+                  </a>
+                )}
                 <div className="flex items-center gap-3 text-sm text-text-secondary">
                   <MapPin size={16} className="text-accent" />
                   {profile.location}

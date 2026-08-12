@@ -1,5 +1,6 @@
 import { request } from './api'
 import type {
+  ContactMessage,
   Profile,
   Project,
   ProjectInput,
@@ -47,5 +48,18 @@ export function updateProfile(token: string, input: Partial<Profile>) {
     method: 'PUT',
     headers: authHeaders(token),
     body: JSON.stringify(input),
+  })
+}
+
+export function fetchContactMessages(token: string) {
+  return request<ContactMessage[]>('/contact', {
+    headers: authHeaders(token),
+  })
+}
+
+export function deleteContactMessage(token: string, id: string) {
+  return request<{ id: string }>(`/contact/${id}`, {
+    method: 'DELETE',
+    headers: authHeaders(token),
   })
 }

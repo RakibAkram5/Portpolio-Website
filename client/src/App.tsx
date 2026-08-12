@@ -9,6 +9,7 @@ import { SkillsAdmin } from '@/pages/admin/SkillsAdmin'
 import { ServicesAdmin } from '@/pages/admin/ServicesAdmin'
 import { TimelineAdmin } from '@/pages/admin/TimelineAdmin'
 import { ProfileAdmin } from '@/pages/admin/ProfileAdmin'
+import { MessagesAdmin } from '@/pages/admin/MessagesAdmin'
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <Route path="/admin/services" element={<ServicesAdmin />} />
               <Route path="/admin/timeline" element={<TimelineAdmin />} />
               <Route path="/admin/profile" element={<ProfileAdmin />} />
+              <Route path="/admin/messages" element={<MessagesAdmin />} />
             </Route>
           </Route>
 

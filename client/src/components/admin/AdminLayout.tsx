@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { FolderKanban, Sparkles, Wrench, GitBranch, UserCircle, LogOut, ExternalLink } from 'lucide-react'
+import { FolderKanban, Sparkles, Wrench, GitBranch, UserCircle, Inbox, LogOut, ExternalLink } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { cn } from '@/utils/cn'
 
@@ -9,6 +9,7 @@ const navItems = [
   { to: '/admin/services', label: 'Services', icon: Wrench },
   { to: '/admin/timeline', label: 'Timeline', icon: GitBranch },
   { to: '/admin/profile', label: 'Profile', icon: UserCircle },
+  { to: '/admin/messages', label: 'Messages', icon: Inbox },
 ]
 
 export function AdminLayout() {

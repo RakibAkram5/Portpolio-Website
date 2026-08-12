@@ -8,10 +8,11 @@ import { fetchProfile } from '@/services/api'
 import { updateProfile } from '@/services/adminApi'
 import type { Profile } from '@/types'
 
-type ProfileFormState = Omit<Profile, 'roles' | 'aboutParagraphs' | 'stats'> & {
+type ProfileFormState = Omit<Profile, 'roles' | 'aboutParagraphs' | 'stats' | 'phone'> & {
   roles: string
   aboutParagraphs: string
   stats: string
+  phone: string
 }
 
 const emptyForm: ProfileFormState = {
@@ -21,6 +22,7 @@ const emptyForm: ProfileFormState = {
   tagline: '',
   intro: '',
   email: '',
+  phone: '',
   location: '',
   resumeUrl: '',
   githubUsername: '',
@@ -37,6 +39,7 @@ function toFormState(profile: Profile): ProfileFormState {
     roles: profile.roles.join(', '),
     aboutParagraphs: profile.aboutParagraphs.join('\n\n'),
     stats: profile.stats.map((s) => `${s.value} | ${s.label}`).join('\n'),
+    phone: profile.phone ?? '',
   }
 }
 
@@ -53,6 +56,7 @@ function toInput(form: ProfileFormState): Partial<Profile> {
         const [value, label] = line.split('|').map((s) => s.trim())
         return { value: value ?? '', label: label ?? '' }
       }),
+    phone: form.phone.trim() || null,
   }
 }
 
@@ -125,8 +129,16 @@ export function ProfileAdmin() {
               <TextareaField label="Hero intro" id="profile-intro" rows={3} value={form.intro} onChange={(e) => setForm({ ...form, intro: e.target.value })} required />
             </div>
 
-            <div className="mt-5 grid gap-5 sm:grid-cols-2">
+            <div className="mt-5 grid gap-5 sm:grid-cols-3">
               <InputField label="Email" id="profile-email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
+              <InputField
+                label="Phone (optional)"
+                id="profile-phone"
+                type="tel"
+                value={form.phone}
+                onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                placeholder="+92 300 1234567"
+              />
               <InputField label="Location" id="profile-location" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} required />
             </div>
 

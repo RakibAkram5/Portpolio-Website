@@ -14,3 +14,15 @@ export async function createContactMessage(input: ContactMessageInput) {
 
   return message
 }
+
+export async function listContactMessages() {
+  return prisma.contactMessage.findMany({ orderBy: { createdAt: 'desc' } })
+}
+
+export async function getContactMessageById(id: string) {
+  return prisma.contactMessage.findUnique({ where: { id } })
+}
+
+export async function deleteContactMessage(id: string) {
+  return prisma.contactMessage.delete({ where: { id } })
+}

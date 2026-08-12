@@ -69,6 +69,7 @@ export interface Profile {
   tagline: string
   intro: string
   email: string
+  phone: string | null
   location: string
   resumeUrl: string
   githubUsername: string
@@ -84,6 +85,15 @@ export interface ContactFormData {
   email: string
   subject: string
   message: string
+}
+
+export interface ContactMessage {
+  id: string
+  name: string
+  email: string
+  subject: string
+  message: string
+  createdAt: string
 }
 
 export interface ApiResponse<T> {

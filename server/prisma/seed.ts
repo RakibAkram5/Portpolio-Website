@@ -149,6 +149,7 @@ const profile = {
   intro:
     'I build scalable, production-ready web and mobile applications with modern frontend, backend, and database technologies.',
   email: 'hello@rakibakram.dev',
+  phone: null,
   location: 'Bangladesh',
   resumeUrl: '/resume.pdf',
   githubUsername: 'rakibakram',

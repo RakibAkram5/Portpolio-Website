@@ -8,6 +8,7 @@ export const profile: Profile = {
   intro:
     "I'm Rakib Akram, a Full-Stack Developer specializing in modern web applications, Flutter apps, scalable backend systems, APIs, and database architecture.",
   email: 'hello@rakibakram.dev',
+  phone: null,
   location: 'Bangladesh',
   resumeUrl: '/resume.pdf',
   githubUsername: 'rakibakram',

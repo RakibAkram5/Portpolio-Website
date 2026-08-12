@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 import { profileUpdateSchema } from '../validators/profile.validator'
-import { getProfile, upsertProfile } from '../services/profile.service'
+import { getProfile, updateProfile } from '../services/profile.service'
 
 export async function getProfileHandler(_req: Request, res: Response) {
   const profile = await getProfile()
@@ -9,6 +9,6 @@ export async function getProfileHandler(_req: Request, res: Response) {
 
 export async function putProfile(req: Request, res: Response) {
   const input = profileUpdateSchema.parse(req.body)
-  const profile = await upsertProfile(input)
+  const profile = await updateProfile(input)
   res.status(200).json({ success: true, data: profile })
 }

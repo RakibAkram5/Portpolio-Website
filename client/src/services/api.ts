@@ -4,8 +4,8 @@ import type { ApiResponse, ContactFormData, Profile, Project, Service, Skill, Ti
 export async function request<T>(path: string, options?: RequestInit): Promise<ApiResponse<T>> {
   try {
     const res = await fetch(`${apiBaseUrl}${path}`, {
-      headers: { 'Content-Type': 'application/json', ...options?.headers },
       ...options,
+      headers: { 'Content-Type': 'application/json', ...options?.headers },
     })
 
     const json = (await res.json()) as ApiResponse<T>

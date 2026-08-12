@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react'
+import { formatApiError } from '@/utils/formatApiError'
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
 import { InputField, TextareaField } from '@/components/ui/FormField'
 import { Button } from '@/components/ui/Button'
@@ -88,7 +89,7 @@ export function ProfileAdmin() {
     if (res.success) {
       setSuccess(true)
     } else {
-      setError(res.message ?? 'Something went wrong.')
+      setError(formatApiError(res))
     }
   }
 

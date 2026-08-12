@@ -7,10 +7,9 @@ export async function getProfile() {
   return prisma.profile.findUnique({ where: { id: PROFILE_ID } })
 }
 
-export async function upsertProfile(input: ProfileUpdateInput) {
-  return prisma.profile.upsert({
+export async function updateProfile(input: ProfileUpdateInput) {
+  return prisma.profile.update({
     where: { id: PROFILE_ID },
-    update: input,
-    create: { id: PROFILE_ID, ...(input as Required<ProfileUpdateInput>) },
+    data: input,
   })
 }

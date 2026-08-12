@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { formatApiError } from '@/utils/formatApiError'
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
 import { AdminListRow } from '@/components/admin/AdminListRow'
 import { Modal } from '@/components/ui/Modal'
@@ -60,7 +61,7 @@ export function SkillsAdmin() {
     if (res.success) {
       close()
     } else {
-      setFormError(res.message ?? 'Something went wrong.')
+      setFormError(formatApiError(res))
     }
   }
 

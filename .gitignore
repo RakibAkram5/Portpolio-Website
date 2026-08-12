@@ -25,5 +25,8 @@ npm-debug.log*
 !.vscode/extensions.json
 Thumbs.db
 
+# Claude Code local tooling state
+.claude/
+
 # Vite
 client/.vite/

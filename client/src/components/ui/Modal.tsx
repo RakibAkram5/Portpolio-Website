@@ -2,6 +2,7 @@ import { useEffect, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
+import { setPageScrollLocked } from '@/hooks/useLenis'
 
 interface ModalProps {
   isOpen: boolean
@@ -19,11 +20,11 @@ export function Modal({ isOpen, onClose, children, labelledBy }: ModalProps) {
     }
 
     document.addEventListener('keydown', onKeyDown)
-    document.body.style.overflow = 'hidden'
+    setPageScrollLocked(true)
 
     return () => {
       document.removeEventListener('keydown', onKeyDown)
-      document.body.style.overflow = ''
+      setPageScrollLocked(false)
     }
   }, [isOpen, onClose])
 
@@ -50,7 +51,9 @@ export function Modal({ isOpen, onClose, children, labelledBy }: ModalProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 10 }}
             transition={{ type: 'spring', stiffness: 320, damping: 30 }}
-            className="relative z-10 max-h-[88vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-border-strong bg-surface shadow-2xl"
+            // Lenis captures wheel/touch for the page; let the dialog scroll natively.
+            data-lenis-prevent
+            className="relative z-10 max-h-[88vh] w-full max-w-3xl overflow-y-auto overscroll-contain rounded-3xl border border-border-strong bg-surface shadow-2xl"
           >
             <button
               type="button"

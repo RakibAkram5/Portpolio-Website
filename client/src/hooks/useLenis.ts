@@ -21,6 +21,15 @@ export function scrollToSection(href: string) {
   history.replaceState(null, '', href === '#home' ? window.location.pathname : href)
 }
 
+/** Freezes page scrolling (e.g. while a modal is open) without fighting the modal's own scroll. */
+export function setPageScrollLocked(locked: boolean) {
+  if (lenis) {
+    if (locked) lenis.stop()
+    else lenis.start()
+  }
+  document.documentElement.style.overflow = locked ? 'hidden' : ''
+}
+
 export function useLenis() {
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches

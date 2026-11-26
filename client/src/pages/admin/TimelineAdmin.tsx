@@ -111,7 +111,7 @@ export function TimelineAdmin() {
               >
                 {tracks.map((t) => (
                   <option key={t} value={t}>
-                    {t === 'JOURNEY' ? 'Journey (About section)' : 'Career (Experience section)'}
+                    {t === 'JOURNEY' ? 'Journey (About + My Path)' : 'Career (My Path only)'}
                   </option>
                 ))}
               </select>

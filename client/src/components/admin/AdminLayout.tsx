@@ -1,9 +1,10 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { FolderKanban, Sparkles, Wrench, GitBranch, UserCircle, Inbox, LogOut, ExternalLink } from 'lucide-react'
+import { BarChart3, FolderKanban, Sparkles, Wrench, GitBranch, UserCircle, Inbox, LogOut, ExternalLink } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { cn } from '@/utils/cn'
 
 const navItems = [
+  { to: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
   { to: '/admin/projects', label: 'Projects', icon: FolderKanban },
   { to: '/admin/skills', label: 'Skills', icon: Sparkles },
   { to: '/admin/services', label: 'Services', icon: Wrench },

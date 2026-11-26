@@ -12,7 +12,7 @@ export function AdminLogin() {
   const [submitting, setSubmitting] = useState(false)
 
   if (!isChecking && isAuthenticated) {
-    return <Navigate to="/admin/projects" replace />
+    return <Navigate to="/admin/analytics" replace />
   }
 
   async function handleSubmit(e: FormEvent) {

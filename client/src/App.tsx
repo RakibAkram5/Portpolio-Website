@@ -12,6 +12,7 @@ const SkillsAdmin = lazy(() => import('@/pages/admin/SkillsAdmin').then((m) => (
 const ServicesAdmin = lazy(() => import('@/pages/admin/ServicesAdmin').then((m) => ({ default: m.ServicesAdmin })))
 const TimelineAdmin = lazy(() => import('@/pages/admin/TimelineAdmin').then((m) => ({ default: m.TimelineAdmin })))
 const ProfileAdmin = lazy(() => import('@/pages/admin/ProfileAdmin').then((m) => ({ default: m.ProfileAdmin })))
+const AnalyticsAdmin = lazy(() => import('@/pages/admin/AnalyticsAdmin').then((m) => ({ default: m.AnalyticsAdmin })))
 const MessagesAdmin = lazy(() => import('@/pages/admin/MessagesAdmin').then((m) => ({ default: m.MessagesAdmin })))
 
 function AdminFallback() {
@@ -33,7 +34,8 @@ function App() {
 
             <Route element={<ProtectedRoute />}>
               <Route element={<AdminLayout />}>
-                <Route path="/admin" element={<Navigate to="/admin/projects" replace />} />
+                <Route path="/admin" element={<Navigate to="/admin/analytics" replace />} />
+                <Route path="/admin/analytics" element={<AnalyticsAdmin />} />
                 <Route path="/admin/projects" element={<ProjectsAdmin />} />
                 <Route path="/admin/skills" element={<SkillsAdmin />} />
                 <Route path="/admin/services" element={<ServicesAdmin />} />

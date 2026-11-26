@@ -59,3 +59,17 @@ export function profilePhotoUrl(profile: Pick<Profile, 'photoUpdatedAt'>): strin
   if (!profile.photoUpdatedAt) return null
   return `${apiBaseUrl}/profile/photo?v=${new Date(profile.photoUpdatedAt).getTime()}`
 }
+
+let visitRecorded = false
+
+/** Counts one page view for the daily visitor stats. Skipped for the logged-in site owner. */
+export function recordVisit() {
+  if (visitRecorded) return
+  visitRecorded = true
+  try {
+    if (localStorage.getItem('portfolio_admin_token')) return
+  } catch {
+    // Storage unavailable (private mode) — still count the visit.
+  }
+  fetch(`${apiBaseUrl}/visits`, { method: 'POST', keepalive: true }).catch(() => {})
+}

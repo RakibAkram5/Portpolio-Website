@@ -7,6 +7,7 @@ import { skillRouter } from './skill.routes'
 import { serviceRouter } from './service.routes'
 import { timelineRouter } from './timeline.routes'
 import { profileRouter } from './profile.routes'
+import { visitRouter } from './visit.routes'
 
 export const apiRouter = Router()
 
@@ -18,3 +19,4 @@ apiRouter.use('/skills', skillRouter)
 apiRouter.use('/services', serviceRouter)
 apiRouter.use('/timeline', timelineRouter)
 apiRouter.use('/profile', profileRouter)
+apiRouter.use('/visits', visitRouter)

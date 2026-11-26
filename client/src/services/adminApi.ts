@@ -1,6 +1,7 @@
 import { request } from './api'
 import type {
   ContactMessage,
+  VisitStats,
   Profile,
   Project,
   ProjectInput,
@@ -77,4 +78,8 @@ export function deleteProfilePhoto(token: string) {
     method: 'DELETE',
     headers: authHeaders(token),
   })
+}
+
+export function fetchVisitStats(token: string, days: number) {
+  return request<VisitStats>(`/visits/stats?days=${days}`, { headers: authHeaders(token) })
 }

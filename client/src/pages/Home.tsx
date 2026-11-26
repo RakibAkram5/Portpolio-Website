@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { recordVisit } from '@/services/api'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { BackgroundFX } from '@/components/layout/BackgroundFX'
@@ -18,6 +20,7 @@ import { Contact } from '@/sections/contact/Contact'
 export function Home() {
   useLenis()
   useSpotlight()
+  useEffect(() => recordVisit(), [])
 
   return (
     <>

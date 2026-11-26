@@ -115,3 +115,22 @@ export interface SocialLink {
   href: string
   icon: string
 }
+
+export interface VisitCount {
+  visitors: number
+  views: number
+}
+
+export interface DailyVisits extends VisitCount {
+  /** YYYY-MM-DD in the stats timezone */
+  date: string
+}
+
+export interface VisitStats {
+  timezone: string
+  today: DailyVisits
+  last7: VisitCount
+  range: VisitCount
+  allTime: VisitCount
+  daily: DailyVisits[]
+}

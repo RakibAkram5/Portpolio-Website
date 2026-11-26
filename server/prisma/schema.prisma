@@ -124,3 +124,16 @@ model ContactMessage {
 
   @@map("contact_messages")
 }
+
+/// One row per (day, anonymous visitor). Unique visitors/day = row count, page views = sum(views).
+model VisitorDay {
+  day         DateTime @db.Date
+  visitorHash String
+  views       Int      @default(1)
+  firstSeenAt DateTime @default(now())
+  lastSeenAt  DateTime @default(now())
+
+  @@id([day, visitorHash])
+  @@index([day])
+  @@map("visitor_days")
+}

@@ -24,6 +24,17 @@ export function errorHandler(err: unknown, _req: Request, res: Response, _next: 
     return
   }
 
+  // body-parser errors (malformed JSON, payload too large) carry their own 4xx status.
+  if (typeof err === 'object' && err !== null && 'type' in err && 'status' in err) {
+    const status = Number((err as { status: unknown }).status)
+    if (status >= 400 && status < 500) {
+      const message =
+        status === 413 ? 'Request body is too large.' : 'Request body could not be parsed.'
+      res.status(status).json({ success: false, message })
+      return
+    }
+  }
+
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     if (err.code === 'P2002') {
       const target = Array.isArray(err.meta?.target) ? err.meta.target.join(', ') : 'field'

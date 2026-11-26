@@ -72,7 +72,7 @@ export function Experience() {
 function TimelineCard({ item, align }: { item: TimelineItem; align: 'left' | 'right' }) {
   return (
     <div
-      className={`max-w-sm rounded-2xl border border-border bg-surface/70 p-5 transition-colors hover:border-accent/30 ${
+      className={`spotlight max-w-sm rounded-2xl border border-border bg-surface/70 p-5 transition-colors hover:border-accent/30 ${
         align === 'right' ? 'text-right' : 'text-left'
       }`}
     >

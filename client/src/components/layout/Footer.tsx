@@ -2,6 +2,7 @@ import { Mail } from 'lucide-react'
 import { GithubIcon, LinkedinIcon } from '@/components/icons/BrandIcons'
 import { navLinks, buildSocialLinks } from '@/config/site'
 import { useProfile } from '@/hooks/useProfile'
+import { scrollToSection } from '@/hooks/useLenis'
 
 const socialIcons = { github: GithubIcon, linkedin: LinkedinIcon, mail: Mail }
 
@@ -12,7 +13,7 @@ export function Footer() {
 
   function handleNavClick(e: React.MouseEvent, href: string) {
     e.preventDefault()
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+    scrollToSection(href)
   }
 
   return (
@@ -56,8 +57,7 @@ export function Footer() {
                   <a
                     key={social.label}
                     href={social.href}
-                    target="_blank"
-                    rel="noreferrer"
+                    {...(social.href.startsWith('mailto:') ? {} : { target: '_blank', rel: 'noreferrer' })}
                     aria-label={social.label}
                     className="flex h-10 w-10 items-center justify-center rounded-full border border-border-strong text-text-secondary hover:text-accent hover:border-accent/50 transition-colors"
                   >

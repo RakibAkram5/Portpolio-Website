@@ -63,3 +63,18 @@ export function deleteContactMessage(token: string, id: string) {
     headers: authHeaders(token),
   })
 }
+
+export function uploadProfilePhoto(token: string, dataUrl: string) {
+  return request<Profile>('/profile/photo', {
+    method: 'PUT',
+    headers: authHeaders(token),
+    body: JSON.stringify({ dataUrl }),
+  })
+}
+
+export function deleteProfilePhoto(token: string) {
+  return request<Profile>('/profile/photo', {
+    method: 'DELETE',
+    headers: authHeaders(token),
+  })
+}

@@ -26,7 +26,7 @@ export function Services() {
               viewport={{ once: true, margin: '-80px' }}
               transition={{ duration: 0.5, delay: (i % 4) * 0.08 }}
               whileHover={{ y: -6 }}
-              className="group rounded-2xl border border-border bg-surface/70 p-6 transition-colors duration-300 hover:border-accent/40"
+              className="spotlight group rounded-2xl border border-border bg-surface/70 p-6 transition-colors duration-300 hover:border-accent/40"
             >
               <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-border-strong bg-surface-2 text-accent transition-transform duration-300 group-hover:scale-110 group-hover:border-accent/50">
                 <Icon name={service.icon} size={21} />

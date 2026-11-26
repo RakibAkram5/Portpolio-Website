@@ -3,4 +3,5 @@ import { createApp } from '../../src/app'
 
 const app = createApp()
 
-export const handler = serverless(app)
+// Image responses (the profile photo) must be base64-encoded for the Lambda/Netlify runtime.
+export const handler = serverless(app, { binary: ['image/*'] })

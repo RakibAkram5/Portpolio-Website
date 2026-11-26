@@ -25,7 +25,8 @@ interface GithubActivityState {
   status: 'loading' | 'success' | 'error'
 }
 
-export function useGithubProfile(username: string) {
+/** Pass null until the username is known, so no requests are spent on a placeholder account. */
+export function useGithubProfile(username: string | null) {
   const [state, setState] = useState<GithubActivityState>({
     profile: null,
     repos: [],
@@ -34,6 +35,7 @@ export function useGithubProfile(username: string) {
   })
 
   useEffect(() => {
+    if (!username) return
     let cancelled = false
 
     async function load() {

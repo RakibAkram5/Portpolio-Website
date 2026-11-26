@@ -19,7 +19,9 @@ export function createApp() {
       methods: ['GET', 'POST', 'PUT', 'DELETE'],
     }),
   )
-  app.use(express.json({ limit: '100kb' }))
+  const defaultJson = express.json({ limit: '100kb' })
+  // The photo upload route installs its own, larger JSON parser.
+  app.use((req, res, next) => (req.path === '/api/profile/photo' ? next() : defaultJson(req, res, next)))
   app.use(morgan(isProduction ? 'combined' : 'dev'))
   app.use('/api', apiRateLimiter, apiRouter)
 

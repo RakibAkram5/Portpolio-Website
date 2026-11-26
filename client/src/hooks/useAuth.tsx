@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
-import { request } from '@/services/api'
+import { AUTH_EXPIRED_EVENT, request } from '@/services/api'
 
 const TOKEN_KEY = 'portfolio_admin_token'
 
@@ -31,6 +31,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsChecking(false)
     })
   }, [token])
+
+  useEffect(() => {
+    function handleExpired() {
+      localStorage.removeItem(TOKEN_KEY)
+      setToken(null)
+    }
+    window.addEventListener(AUTH_EXPIRED_EVENT, handleExpired)
+    return () => window.removeEventListener(AUTH_EXPIRED_EVENT, handleExpired)
+  }, [])
 
   async function login(password: string) {
     const res = await request<{ token: string }>('/auth/login', {

@@ -18,7 +18,7 @@ export function ProjectCard({ project, index, onOpen }: ProjectCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-100px' }}
       transition={{ duration: 0.6, delay: index * 0.08 }}
-      className="group relative rounded-3xl border border-border bg-surface/70 p-5 sm:p-6 transition-colors duration-300 hover:border-accent/40"
+      className="spotlight group relative rounded-3xl border border-border bg-surface/70 p-5 sm:p-6 transition-colors duration-300 hover:border-accent/40"
     >
       <button
         type="button"

@@ -106,6 +106,9 @@ model Profile {
   aboutHeading   String
   aboutParagraphs String[]
   stats          Json
+  photoData      Bytes?
+  photoMime      String?
+  photoUpdatedAt DateTime?
   updatedAt      DateTime @updatedAt
 
   @@map("profile")

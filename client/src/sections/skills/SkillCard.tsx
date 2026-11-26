@@ -22,7 +22,7 @@ export function SkillCard({ skill, index }: SkillCardProps) {
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.35, delay: Math.min(index * 0.04, 0.3) }}
       whileHover={{ y: -5 }}
-      className="group relative overflow-hidden rounded-2xl border border-border bg-surface/80 p-5 transition-colors duration-300 hover:border-accent/40"
+      className="spotlight group relative overflow-hidden rounded-2xl border border-border bg-surface/80 p-5 transition-colors duration-300 hover:border-accent/40"
     >
       <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-accent/0 blur-2xl transition-colors duration-500 group-hover:bg-accent/15" />
 

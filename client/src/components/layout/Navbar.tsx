@@ -6,6 +6,7 @@ import { navLinks } from '@/config/site'
 import { useScrolled } from '@/hooks/useScrolled'
 import { useActiveSection } from '@/hooks/useActiveSection'
 import { useProfile } from '@/hooks/useProfile'
+import { scrollToSection } from '@/hooks/useLenis'
 import { cn } from '@/utils/cn'
 
 export function Navbar() {
@@ -16,8 +17,7 @@ export function Navbar() {
 
   function handleNavClick(href: string) {
     setMenuOpen(false)
-    const el = document.querySelector(href)
-    el?.scrollIntoView({ behavior: 'smooth' })
+    scrollToSection(href)
   }
 
   return (

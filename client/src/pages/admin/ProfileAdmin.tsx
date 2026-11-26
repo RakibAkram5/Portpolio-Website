@@ -4,11 +4,13 @@ import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
 import { InputField, TextareaField } from '@/components/ui/FormField'
 import { Button } from '@/components/ui/Button'
 import { useAuth } from '@/hooks/useAuth'
-import { fetchProfile } from '@/services/api'
-import { updateProfile } from '@/services/adminApi'
+import { PhotoUploader } from '@/components/admin/PhotoUploader'
+import { invalidateApiData } from '@/hooks/useApiData'
+import { fetchProfile, profilePhotoUrl } from '@/services/api'
+import { deleteProfilePhoto, updateProfile, uploadProfilePhoto } from '@/services/adminApi'
 import type { Profile } from '@/types'
 
-type ProfileFormState = Omit<Profile, 'roles' | 'aboutParagraphs' | 'stats' | 'phone'> & {
+type ProfileFormState = Omit<Profile, 'roles' | 'aboutParagraphs' | 'stats' | 'phone' | 'photoUpdatedAt'> & {
   roles: string
   aboutParagraphs: string
   stats: string
@@ -35,7 +37,17 @@ const emptyForm: ProfileFormState = {
 
 function toFormState(profile: Profile): ProfileFormState {
   return {
-    ...profile,
+    name: profile.name,
+    role: profile.role,
+    tagline: profile.tagline,
+    intro: profile.intro,
+    email: profile.email,
+    location: profile.location,
+    resumeUrl: profile.resumeUrl,
+    githubUsername: profile.githubUsername,
+    githubUrl: profile.githubUrl,
+    linkedinUrl: profile.linkedinUrl,
+    aboutHeading: profile.aboutHeading,
     roles: profile.roles.join(', '),
     aboutParagraphs: profile.aboutParagraphs.join('\n\n'),
     stats: profile.stats.map((s) => `${s.value} | ${s.label}`).join('\n'),
@@ -53,8 +65,10 @@ function toInput(form: ProfileFormState): Partial<Profile> {
       .map((line) => line.trim())
       .filter(Boolean)
       .map((line) => {
-        const [value, label] = line.split('|').map((s) => s.trim())
-        return { value: value ?? '', label: label ?? '' }
+        // Split on the first "|" only, so labels may contain the character themselves.
+        const sep = line.indexOf('|')
+        if (sep === -1) return { value: line, label: '' }
+        return { value: line.slice(0, sep).trim(), label: line.slice(sep + 1).trim() }
       }),
     phone: form.phone.trim() || null,
   }
@@ -67,11 +81,33 @@ export function ProfileAdmin() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null)
+
+  async function handlePhotoUpload(dataUrl: string) {
+    if (!token) return { success: false, message: 'Not authenticated.' }
+    const res = await uploadProfilePhoto(token, dataUrl)
+    if (res.success && res.data) {
+      setPhotoUrl(profilePhotoUrl(res.data))
+      invalidateApiData(fetchProfile)
+    }
+    return { success: res.success, message: formatApiError(res) }
+  }
+
+  async function handlePhotoRemove() {
+    if (!token) return { success: false, message: 'Not authenticated.' }
+    const res = await deleteProfilePhoto(token)
+    if (res.success) {
+      setPhotoUrl(null)
+      invalidateApiData(fetchProfile)
+    }
+    return { success: res.success, message: formatApiError(res) }
+  }
 
   useEffect(() => {
     fetchProfile().then((res) => {
       if (res.success && res.data) {
         setForm(toFormState(res.data))
+        setPhotoUrl(profilePhotoUrl(res.data))
       } else {
         setError(res.message ?? 'Failed to load profile.')
       }
@@ -92,6 +128,7 @@ export function ProfileAdmin() {
     setSubmitting(false)
     if (res.success) {
       setSuccess(true)
+      invalidateApiData(fetchProfile)
     } else {
       setError(formatApiError(res))
     }
@@ -105,7 +142,11 @@ export function ProfileAdmin() {
         {loading ? (
           <p className="text-sm text-text-secondary">Loading...</p>
         ) : (
-          <form onSubmit={handleSubmit} className="max-w-2xl">
+          <div className="max-w-2xl">
+          <div className="mb-8">
+            <PhotoUploader currentUrl={photoUrl} onUpload={handlePhotoUpload} onRemove={handlePhotoRemove} />
+          </div>
+          <form onSubmit={handleSubmit}>
             <div className="grid gap-5 sm:grid-cols-2">
               <InputField label="Name" id="profile-name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
               <InputField label="Primary role" id="profile-role" value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} required />
@@ -186,6 +227,7 @@ export function ProfileAdmin() {
               {submitting ? 'Saving...' : 'Save Changes'}
             </Button>
           </form>
+          </div>
         )}
       </div>
     </div>

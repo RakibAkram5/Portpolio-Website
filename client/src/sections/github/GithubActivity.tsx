@@ -15,8 +15,10 @@ const fallbackStats = [
 ]
 
 export function GithubActivity() {
-  const { data: siteProfile } = useProfile()
-  const { profile, repos, activity, status } = useGithubProfile(siteProfile.githubUsername)
+  const { data: siteProfile, status: profileStatus } = useProfile()
+  const { profile, repos, activity, status } = useGithubProfile(
+    profileStatus === 'loading' ? null : siteProfile.githubUsername,
+  )
 
   const stats =
     status === 'success' && profile
@@ -77,12 +79,14 @@ export function GithubActivity() {
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-semibold text-text-primary">Last 28 Days</h3>
               <span className="font-mono text-xs text-text-muted">
-                {status === 'success' ? 'live from GitHub' : 'unavailable'}
+                {status === 'success' ? 'live from GitHub' : status === 'loading' ? 'loading…' : 'unavailable'}
               </span>
             </div>
             <div className="mt-5">
               {status === 'success' ? (
                 <ActivityGraph activity={activity} />
+              ) : status === 'loading' ? (
+                <div className="h-28 animate-pulse rounded-xl bg-surface-2/70" />
               ) : (
                 <p className="text-sm text-text-secondary">
                   Activity data couldn&apos;t be loaded right now — check back later or view the profile directly on

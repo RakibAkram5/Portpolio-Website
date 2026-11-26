@@ -65,6 +65,39 @@ export function AdminLayout() {
         </aside>
 
         <main className="flex-1 overflow-x-hidden">
+          {/* Mobile navigation — the sidebar is hidden below the sm breakpoint. */}
+          <div className="sticky top-0 z-30 border-b border-border bg-surface/90 backdrop-blur sm:hidden">
+            <div className="flex items-center justify-between px-4 pt-3">
+              <span className="font-mono text-base font-semibold">
+                <span className="text-accent">&lt;</span>Admin<span className="text-accent">/&gt;</span>
+              </span>
+              <div className="flex items-center gap-1">
+                <a href="/" target="_blank" rel="noreferrer" aria-label="View site" className="rounded-lg p-2 text-text-secondary hover:text-text-primary">
+                  <ExternalLink size={17} />
+                </a>
+                <button type="button" onClick={logout} aria-label="Log out" className="rounded-lg p-2 text-text-secondary hover:text-rose cursor-pointer">
+                  <LogOut size={17} />
+                </button>
+              </div>
+            </div>
+            <nav className="flex gap-1 overflow-x-auto px-3 py-2.5 [scrollbar-width:none]">
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  className={({ isActive }) =>
+                    cn(
+                      'flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium',
+                      isActive ? 'bg-accent/10 text-accent' : 'text-text-secondary',
+                    )
+                  }
+                >
+                  <item.icon size={14} />
+                  {item.label}
+                </NavLink>
+              ))}
+            </nav>
+          </div>
           <Outlet />
         </main>
       </div>

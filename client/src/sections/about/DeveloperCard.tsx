@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Code2, Layers3, Smartphone, Server } from 'lucide-react'
 import { useProfile } from '@/hooks/useProfile'
+import { profilePhotoUrl } from '@/services/api'
 
 const focusAreas = [
   { label: 'Full-Stack Development', icon: Layers3 },
@@ -17,6 +18,7 @@ export function DeveloperCard() {
     .join('')
     .slice(0, 2)
     .toUpperCase()
+  const photo = profilePhotoUrl(profile)
 
   return (
     <motion.div
@@ -24,14 +26,20 @@ export function DeveloperCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.6 }}
-      className="relative overflow-hidden rounded-3xl border border-border-strong bg-surface p-7 sm:p-8"
+      className="spotlight relative overflow-hidden rounded-3xl border border-border-strong bg-surface p-7 sm:p-8"
     >
       <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-accent/10 blur-[90px]" />
 
       <div className="relative flex items-center gap-4">
-        <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-accent/30 bg-accent/10 font-mono text-xl font-bold text-accent">
-          {initials}
-        </div>
+        {photo ? (
+          <div className="ring-spin h-16 w-16 shrink-0 rounded-2xl p-[2px]">
+            <img src={photo} alt={profile.name} loading="lazy" className="h-full w-full rounded-[14px] object-cover" />
+          </div>
+        ) : (
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-accent/30 bg-accent/10 font-mono text-xl font-bold text-accent">
+            {initials}
+          </div>
+        )}
         <div>
           <h3 className="text-lg font-semibold text-text-primary">{profile.name}</h3>
           <p className="text-sm text-text-secondary">{profile.roles.join(' · ')}</p>

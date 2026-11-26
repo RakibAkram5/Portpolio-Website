@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { TechIcon } from '@/components/ui/TechIcon'
 import type { Project } from '@/types'
 
@@ -19,7 +20,19 @@ interface ProjectMockupProps {
   className?: string
 }
 
+function displayHost(project: Project) {
+  const url = project.liveUrl || project.githubUrl
+  try {
+    const u = new URL(url)
+    return (u.host + u.pathname).replace(/\/$/, '')
+  } catch {
+    return project.slug
+  }
+}
+
 export function ProjectMockup({ project, className }: ProjectMockupProps) {
+  const [imageOk, setImageOk] = useState(Boolean(project.image))
+
   return (
     <div className={`relative overflow-hidden rounded-2xl border border-border-strong bg-surface-2 ${className ?? ''}`}>
       <div className="flex items-center gap-1.5 border-b border-border bg-surface px-4 py-2.5">
@@ -27,10 +40,20 @@ export function ProjectMockup({ project, className }: ProjectMockupProps) {
         <span className="h-2 w-2 rounded-full bg-amber/60" />
         <span className="h-2 w-2 rounded-full bg-accent/60" />
         <span className="ml-3 truncate font-mono text-[10px] text-text-muted">
-          {project.slug}.rakibakram.dev
+          {displayHost(project)}
         </span>
       </div>
 
+      {imageOk && (
+        <img
+          src={project.image}
+          alt={`${project.title} screenshot`}
+          loading="lazy"
+          onError={() => setImageOk(false)}
+          className="block h-52 w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04] sm:h-64"
+        />
+      )}
+      {!imageOk && (
       <div className="relative flex h-52 items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(45,212,191,0.12),transparent_55%),radial-gradient(circle_at_80%_80%,rgba(129,140,248,0.1),transparent_55%)] sm:h-64">
         <div className="grid-bg absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_20%,transparent_90%)]" />
 
@@ -54,6 +77,7 @@ export function ProjectMockup({ project, className }: ProjectMockupProps) {
           ))}
         </div>
       </div>
+      )}
     </div>
   )
 }

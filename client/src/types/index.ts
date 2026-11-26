@@ -78,6 +78,8 @@ export interface Profile {
   aboutHeading: string
   aboutParagraphs: string[]
   stats: ProfileStat[]
+  /** ISO timestamp of the last photo upload, or null when no photo is set. */
+  photoUpdatedAt: string | null
 }
 
 export interface ContactFormData {

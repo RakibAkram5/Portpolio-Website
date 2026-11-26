@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '@/hooks/useAuth'
+import { invalidateApiData } from '@/hooks/useApiData'
 import type { ApiResponse } from '@/types'
 
 interface CrudApi<TRecord, TInput> {
@@ -36,21 +37,30 @@ export function useAdminCrud<TRecord extends { id: string }, TInput>(
   async function create(input: TInput) {
     if (!token) return { success: false, message: 'Not authenticated.' }
     const res = await api.create(token, input)
-    if (res.success) await reload()
+    if (res.success) {
+      invalidateApiData(fetchList)
+      await reload()
+    }
     return res
   }
 
   async function update(id: string, input: Partial<TInput>) {
     if (!token) return { success: false, message: 'Not authenticated.' }
     const res = await api.update(token, id, input)
-    if (res.success) await reload()
+    if (res.success) {
+      invalidateApiData(fetchList)
+      await reload()
+    }
     return res
   }
 
   async function remove(id: string) {
     if (!token) return { success: false, message: 'Not authenticated.' }
     const res = await api.remove(token, id)
-    if (res.success) await reload()
+    if (res.success) {
+      invalidateApiData(fetchList)
+      await reload()
+    }
     return res
   }
 

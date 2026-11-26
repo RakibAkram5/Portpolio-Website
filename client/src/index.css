@@ -45,6 +45,19 @@
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
   }
+  @keyframes ring-rotate {
+    to { --ring-angle: 360deg; }
+  }
+  @keyframes shimmer {
+    0%, 100% { background-position: 100% 50%; }
+    50% { background-position: 0% 50%; }
+  }
+}
+
+@property --ring-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
 }
 
 @layer base {
@@ -53,7 +66,6 @@
   }
 
   html {
-    scroll-behavior: smooth;
     background: var(--color-bg);
   }
 
@@ -113,6 +125,60 @@
       linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
     background-size: 44px 44px;
+  }
+
+  /* Mouse-following glow on cards; --mx/--my are set by useSpotlight(). */
+  .spotlight {
+    position: relative;
+    isolation: isolate;
+  }
+  .spotlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(45, 212, 191, 0.09), transparent 45%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+  .spotlight::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(94, 234, 212, 0.55), transparent 50%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+  .spotlight:hover::before,
+  .spotlight:hover::after {
+    opacity: 1;
+  }
+
+  /* Rotating gradient ring used around the portrait. */
+  .ring-spin {
+    background: conic-gradient(from var(--ring-angle), var(--color-accent), var(--color-violet), transparent 40%, var(--color-accent-soft) 70%, var(--color-accent));
+    animation: ring-rotate 6s linear infinite;
+  }
+
+  .text-shimmer {
+    background: linear-gradient(110deg, var(--color-accent) 20%, #e9fffb 40%, var(--color-accent-soft) 55%, var(--color-violet) 80%);
+    background-size: 220% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: shimmer 6s ease-in-out infinite;
+  }
+
+  .mask-fade-x {
+    mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
   }
 
   .noise {
